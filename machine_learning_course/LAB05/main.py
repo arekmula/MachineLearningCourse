@@ -4,6 +4,7 @@ from sklearn import ensemble
 from sklearn import impute
 from sklearn import metrics
 from sklearn import model_selection
+from scipy import stats
 from sklearn import svm
 
 
@@ -100,5 +101,33 @@ def todo1v2():
     plt.show()
 
 
+def todo2():
+    X, y = get_diabetes_dataset()
+
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.2, random_state=42)
+
+    plt.figure()
+    X_train.boxplot()
+    plt.figure()
+    X_train["mass"].hist()
+
+    # Visualize distribution of mass and plas
+    fig, ax = plt.subplots(2, 1)
+    ax[0].scatter(X_train["mass"], X_train["plas"])
+    ax[0].set_xlabel("mass")
+    ax[0].set_ylabel("plas")
+
+    # Compute z score for plas and mass and delete elements with zscore higher than 2
+    X_mass_zscore = stats.zscore(X_train["mass"])
+    X_plas_zscore = stats.zscore(X_train["plas"])
+    X_train_mass_no_outliers = X_train["mass"][(X_mass_zscore < 2) & (X_plas_zscore < 2)]
+    X_train_plass_no_outliers = X_train["plas"][(X_mass_zscore < 2) & (X_plas_zscore < 2)]
+    ax[1].scatter(X_train_mass_no_outliers, X_train_plass_no_outliers)
+    ax[1].set_xlabel("mass")
+    ax[1].set_ylabel("plas")
+
+    plt.show()
+
 # todo1()
-todo1v2()
+# todo1v2()
+todo2()
