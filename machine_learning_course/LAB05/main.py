@@ -128,6 +128,32 @@ def todo2():
 
     plt.show()
 
+
+def todo3():
+    X, y = get_diabetes_dataset()
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.2, random_state=42)
+
+    isolation_forest = ensemble.IsolationForest(contamination="auto")
+    isolation_forest.fit(X_train[["mass", "plas"]])
+    y_predicted_outliers = isolation_forest.predict(X_test[["mass", "plas"]])
+
+    X_test_inliers = X_test[["mass","plas"]][y_predicted_outliers == 1]
+    X_test_outliers = X_test[["mass", "plas"]][y_predicted_outliers == -1]
+
+    # Visualize distribution of mass and plas
+    fig, ax = plt.subplots(1, 1)
+    ax.scatter(X_test_outliers["mass"], X_test_outliers["plas"])
+    ax.set_xlabel("mass")
+    ax.set_ylabel("plas")
+    ax.set_title("With outliers")
+    ax.scatter(X_test_inliers["mass"], X_test_inliers["plas"])
+
+    ax.legend(["Outliers", "Inliers"])
+
+    plt.show()
+    ...
+
 # todo1()
 # todo1v2()
-todo2()
+# todo2()
+todo3()
