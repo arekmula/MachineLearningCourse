@@ -15,43 +15,6 @@ def get_diabetes_dataset():
 
 
 def todo1():
-    X, y = datasets.fetch_openml('diabetes', as_frame=True, return_X_y=True)
-    # print(X.info())
-    # print(X.describe(include="all"))
-
-    X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.2, random_state=42)
-
-    imputer = impute.SimpleImputer(missing_values=0.0, strategy="mean")
-
-    X_train[["mass"]] = imputer.fit_transform(X_train[["mass"]])
-    # X["mass"] = imputer.transform(X["mass"])
-
-
-    isolation_forest = ensemble.IsolationForest(contamination="auto")
-    isolation_forest.fit(X_train)
-    y_predicted_outliers = isolation_forest.predict(X_test)
-    print(y_predicted_outliers)
-
-
-    plt.figure()
-    X_train.boxplot()
-
-    X_train.hist()
-
-    plt.show()
-
-    clf = svm.SVC()
-    clf.fit(X_train, y_train)
-    y_predicted = clf.predict(X_test)
-    print(metrics.classification_report(y_test, y_predicted))
-
-    clf_rf = ensemble.RandomForestClassifier()
-    clf_rf.fit(X_train, y_train)
-    y_predicted_rf = clf_rf.predict(X_test)
-    print(metrics.classification_report(y_test, y_predicted_rf))
-
-
-def todo1v2():
     X, y = get_diabetes_dataset()
 
     # Show stats of dataset
@@ -154,6 +117,5 @@ def todo3():
     ...
 
 # todo1()
-# todo1v2()
 # todo2()
 todo3()
